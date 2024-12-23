@@ -35,7 +35,7 @@ function M.core_mappings(mappings)
     -- @ray
     maps.n["<Tab>"] = { ":bnext<cr>",silent = true, desc = "Next buffer" }
     maps.n["<S-Tab>"] = { ":bprev<cr>", silent = true, desc= "Previous buffer" }
-    maps.i["<C-z>"] = {"<C-o>:u<cr>", silent = true, desc = "Undo insert mode"}
+    maps.i["<C-z>"] = {"<C-c>:u<cr>", silent = true, desc = "Undo insert mode"}
     maps.i["<C-h>"] = { "<Left>", desc = "Move left" }
     maps.i["<C-l>"] = { "<Right>", desc = "Move right" }
     maps.i["<C-j>"] = { "<Down>", desc = "Move down" }
