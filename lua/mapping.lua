@@ -32,6 +32,26 @@ function M.core_mappings(mappings)
     maps.v[">"] = { ">gv", desc = "Indent line" }
     maps.t["<Esc>"] = { [[<C-\><C-n>]], desc = "Exit terminal mode" }
 
+
+    -- @ray
+    maps.i["<C-h>"] = { "<Left>", desc = "Move left" }
+    maps.i["<C-l>"] = { "<Right>", desc = "Move right" }
+    maps.i["<C-j>"] = { "<Down>", desc = "Move down" }
+    maps.i["<C-k>"] = { "<Up>", desc = "Move up" }
+    maps.i["<C-b>"] = { "<Esc>^i", desc = "Move to beginning" }
+    maps.i["<C-e>"] = { "<End>", desc = "Move to end" }
+    maps.i["<C-m>"] = { "<BS>", desc = "Backspace" }
+    maps.x["p"] = { 'p:let @+=@0<CR>:let @"=@0<CR>', silent = true }
+    maps.n["X"] = { '"_X', silent = true }
+    maps.n["d"] = { '"_d', silent = true }
+    maps.n["D"] = { '"_D', silent = true }
+    maps.v["d"] = { '"_d', silent = true }
+    maps.v["D"] = { '"_D', silent = true }
+
+    maps.i["<C-s>"] = { "<esc>:w<cr>a", desc = "Save file", silent = true }
+    maps.x["<C-s>"] = { "<esc>:w<cr>a", desc = "Save file", silent = true }
+    maps.n["<C-s>"] = { "<Cmd>w<cr>", desc = "Save file", silent = true }
+
     -- 在visual mode 里粘贴不要复制
     maps.n["x"] = { '"_x', desc = "Cut without copy" }
 

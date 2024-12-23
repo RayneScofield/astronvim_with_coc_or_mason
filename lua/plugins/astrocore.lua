@@ -24,9 +24,29 @@ return {
         wrap = true,
         scrolloff = 5,
         relativenumber = false,
+
+        -- @ray
+        clipboard = "unnamedplus",
+        jumpoptions = "stack",
       },
       g = {
         autoformat = false,
+
+        -- @ray
+        clipboard = {
+          name = "WslClipboard",
+          copy = {
+            ["+"] = "clip.exe",
+            ["*"] = "clip.exe",
+          },
+          paste = {
+            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+          },
+          cache_enable = 0,
+        },
+
+        have_nerd_font = true,
       },
     }
 
