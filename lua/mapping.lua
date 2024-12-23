@@ -38,9 +38,6 @@ function M.core_mappings(mappings)
     maps.i["<C-l>"] = { "<Right>", desc = "Move right" }
     maps.i["<C-j>"] = { "<Down>", desc = "Move down" }
     maps.i["<C-k>"] = { "<Up>", desc = "Move up" }
-    maps.i["<C-b>"] = { "<Esc>^i", desc = "Move to beginning" }
-    maps.i["<C-e>"] = { "<End>", desc = "Move to end" }
-    maps.i["<C-m>"] = { "<BS>", desc = "Backspace" }
     maps.x["p"] = { 'p:let @+=@0<CR>:let @"=@0<CR>', silent = true }
     maps.n["X"] = { '"_X', silent = true }
     maps.n["d"] = { '"_d', silent = true }

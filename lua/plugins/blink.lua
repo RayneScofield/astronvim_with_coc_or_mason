@@ -113,7 +113,12 @@ return {
         ["<C-U>"] = { "scroll_documentation_up", "fallback" },
         ["<C-D>"] = { "scroll_documentation_down", "fallback" },
         ["<C-E>"] = { "hide", "fallback" },
-        ["<CR>"] = { "fallback" },
+        ["<CR>"] = {
+          function(cmp)
+            if cmp.is_visible() then return cmp.accept() end
+          end,
+          "fallback",
+        },
         ["<Tab>"] = {
           function(cmp)
             if cmp.is_visible() then
