@@ -6,7 +6,7 @@ function M.core_mappings(mappings)
   local maps = mappings
   if maps then
     maps.n["<Leader>n"] = false
-     
+
     maps.n.n = { require("utils").better_search "n", desc = "Next search" }
     maps.n.N = { require("utils").better_search "N", desc = "Previous search" }
 
@@ -32,8 +32,10 @@ function M.core_mappings(mappings)
     maps.v[">"] = { ">gv", desc = "Indent line" }
     maps.t["<Esc>"] = { [[<C-\><C-n>]], desc = "Exit terminal mode" }
 
-
     -- @ray
+    maps.n["<Tab>"] = { ":bnext<cr>",silent = true, desc = "Next buffer" }
+    maps.n["<S-Tab>"] = { ":bprev<cr>", silent = true, desc= "Previous buffer" }
+    maps.i["<C-z>"] = {"<C-o>:u<cr>", silent = true, desc = "Undo insert mode"}
     maps.i["<C-h>"] = { "<Left>", desc = "Move left" }
     maps.i["<C-l>"] = { "<Right>", desc = "Move right" }
     maps.i["<C-j>"] = { "<Down>", desc = "Move down" }
