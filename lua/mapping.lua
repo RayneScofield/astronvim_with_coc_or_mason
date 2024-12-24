@@ -23,7 +23,7 @@ function M.core_mappings(mappings)
     maps.n["N"] = { "Nzz" }
 
     -- close search highlight
-    maps.n["<Leader>nh"] = { ":nohlsearch<CR>", desc = "Close search highlight", silent = true }
+    maps.n["<Esc>"] = { ":nohlsearch<CR>", desc = "Close search highlight", silent = true }
 
     maps.n["H"] = { "^", desc = "Go to start without blank" }
     maps.n["L"] = { "$", desc = "Go to end without blank" }
@@ -47,9 +47,9 @@ function M.core_mappings(mappings)
     maps.v["d"] = { '"_d', silent = true }
     maps.v["D"] = { '"_D', silent = true }
 
-    maps.i["<C-s>"] = { "<esc>:w<cr>a", desc = "Save file", silent = true }
-    maps.x["<C-s>"] = { "<esc>:w<cr>a", desc = "Save file", silent = true }
-    maps.n["<C-s>"] = { "<Cmd>w<cr>", desc = "Save file", silent = true }
+    -- maps.i["<C-s>"] = { "<esc>:w<cr>a", desc = "Save file", silent = true }
+    -- maps.x["<C-s>"] = { "<esc>:w<cr>a", desc = "Save file", silent = true }
+    -- maps.n["<C-s>"] = { "<Cmd>w<cr>", desc = "Save file", silent = true }
 
     -- 在visual mode 里粘贴不要复制
     maps.n["x"] = { '"_x', desc = "Cut without copy" }
