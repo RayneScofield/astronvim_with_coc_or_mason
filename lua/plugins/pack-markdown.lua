@@ -56,8 +56,7 @@ return {
                 n = {
                   ["<Leader>lz"] = { "<cmd>MarkdownPreview<CR>", desc = "Markdown Start Preview" },
                   ["<Leader>lZ"] = { "<cmd>MarkdownPreviewStop<CR>", desc = "Markdown Stop Preview" },
-                  ["<Leader>lp"] = { "<cmd>PastifyAfter<CR>", desc = "Markdown Paste Image After" },
-                  ["<Leader>lP"] = { "<cmd>Pastify<CR>", desc = "Markdown Paste Image" },
+                  ["<Leader>lp"] = { "<CMD>PasteImage<CR>", desc = "Paste image from system clipboard" },
                 },
                 x = {
                   ["<Leader>lt"] = { [[:'<,'>MakeTable! \t<CR>]], desc = "Markdown csv to table(Default:\\t)" },
@@ -100,13 +99,21 @@ return {
     end,
   },
   {
-    "TobinPalmer/pastify.nvim",
-    cmd = { "Pastify", "PastifyAfter" },
+    "HakonHarnes/img-clip.nvim",
+    cmd = { "PasteImage", "ImgClipDebug", "ImgClipConfig" },
     opts = {
-      absolute_path = false,
-      apikey = "",
-      local_path = "/assets/imgs/",
-      save = "local",
+      default = {
+        prompt_for_file_name = false,
+        embed_image_as_base64 = false,
+        drag_and_drop = {
+          enabled = true,
+          insert_mode = true,
+        },
+        use_absolute_path = vim.fn.has "win32" == 1,
+        relative_to_current_file = true,
+        show_dir_path_in_prompt = true,
+        dir_path = "assets/imgs/",
+      },
     },
   },
   {
