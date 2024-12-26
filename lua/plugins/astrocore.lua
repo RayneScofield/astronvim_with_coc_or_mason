@@ -19,15 +19,32 @@ return {
         list = false,
         listchars = { tab = "│→", extends = "⟩", precedes = "⟨", trail = "·", nbsp = "␣" },
         showbreak = "↪ ",
-        splitkeep = "screen",
+        splitkeep = "cursor",
         swapfile = false,
         wrap = true,
         scrolloff = 5,
-        relativenumber = false,
+        relativenumber = true,
 
         -- @ray
         clipboard = "unnamedplus",
         jumpoptions = "stack",
+        autoindent = true,
+        smartindent = true,
+        encoding = "utf-8",
+        fileencoding = "utf-8",
+        title = true,
+        hlsearch = true,
+        laststatus = 3,
+        expandtab = true,
+        inccommand = "split",
+        ignorecase = true,
+        smarttab = true,
+        breakindent = true,
+        shiftwidth = 2,
+        tabstop = 2,
+        backspace = { "start", "eol", "indent" },
+        splitbelow = true,
+        splitright = true,
       },
       g = {
         autoformat = false,
@@ -100,6 +117,25 @@ return {
                   desc = "Quit buffer",
                 })
               end)
+            end,
+          },
+        },
+        --ray
+        change_conceal_level = {
+          {
+            event = "FileType",
+            pattern = { "json", "jsonc", "markdown" },
+            callback = function() vim.opt_local.conceallevel = 0 end,
+          },
+        },
+        disable_auto_comment_on_new_line = {
+          {
+            -- event = { "BufEnter", "FileType" },
+            event = { "FileType" },
+            pattern = "*",
+            callback = function()
+              -- vim.opt_local.formatoptions:remove({"c", "r", "o"})
+              vim.opt_local.formatoptions:remove { "c", "o" }
             end,
           },
         },
