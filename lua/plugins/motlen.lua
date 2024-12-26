@@ -5,10 +5,10 @@ return {}
 --     vim.notify("No virtual environment found.", vim.log.levels.WARN)
 --     return
 --   end
---
+
 --   -- Canonicalize the venv_path to ensure consistency
 --   venv_path = vim.fn.fnamemodify(venv_path, ":p")
---
+
 --   -- Check if the kernel spec already exists
 --   local handle = io.popen "jupyter kernelspec list --json"
 --   local existing_kernels = {}
@@ -26,7 +26,7 @@ return {}
 --       end
 --     end
 --   end
---
+
 --   -- Prompt the user for a custom kernel name, ensuring it is unique
 --   local new_kernel_name
 --   repeat
@@ -42,7 +42,7 @@ return {}
 --       new_kernel_name = nil
 --     end
 --   until new_kernel_name
---
+
 --   -- Create the kernel spec with the unique name
 --   print "Creating a new kernel spec for this virtual environment..."
 --   local cmd = string.format(
@@ -50,12 +50,12 @@ return {}
 --     vim.fn.shellescape(venv_path .. "/bin/python"),
 --     new_kernel_name
 --   )
---
+
 --   os.execute(cmd)
 --   vim.notify("Kernel spec '" .. new_kernel_name .. "' created successfully.", vim.log.levels.INFO)
 --   return new_kernel_name
 -- end
---
+
 -- ---@type LazySpec
 -- return {
 --   "benlubas/molten-nvim",
@@ -69,13 +69,22 @@ return {}
 --       opts = function(_, opts)
 --         if not opts.mappings then opts.mappings = {} end
 --         local prefix = "<leader>j"
---
+
 --         opts.mappings.n[prefix] = { desc = require("astroui").get_icon("Molten", 1, true) .. "Molten" }
 --         opts.mappings.n[prefix .. "e"] = { "<Cmd>MoltenEvaluateOperator<CR>", desc = "Run operator selection" }
 --         opts.mappings.n[prefix .. "l"] = { "<Cmd>MoltenEvaluateLine<CR>", desc = "Evaluate line" }
 --         opts.mappings.n[prefix .. "c"] = { "<Cmd>MoltenReevaluateCell<CR>", desc = "Re-evaluate cell" }
 --         opts.mappings.n[prefix .. "k"] = { ":noautocmd MoltenEnterOutput<CR>", desc = "Enter Output" }
---
+--         opts.mappings.v[prefix .. "k"] = {
+--           function()
+--             vim.cmd "noautocmd MoltenEnterOutput"
+--             if vim.fn.mode() == "v" or vim.fn.mode() == "V" or vim.fn.mode() == "\22" then
+--               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+--             end
+--           end,
+--           desc = "Enter Output",
+--         }
+
 --         opts.mappings.n[prefix .. "m"] = { desc = "Commands" }
 --         opts.mappings.n[prefix .. "mi"] = { "<Cmd>MoltenInit<CR>", desc = "Initialize the plugin" }
 --         opts.mappings.n[prefix .. "mh"] = { "<Cmd>MoltenHideOutput<CR>", desc = "Hide Output" }
@@ -94,31 +103,31 @@ return {}
 --           desc = "Initialize for Python venv",
 --           silent = true,
 --         }
---
+
 --         opts.mappings.v[prefix] = { desc = require("astroui").get_icon("Molten", 1, true) .. "Molten" }
---         opts.mappings.v[prefix .. "r"] = { ":<C-u>MoltenEvaluateVisual<CR>gv", desc = "Evaluate visual selection" }
---
+--         opts.mappings.v[prefix .. "r"] = { ":<C-u>MoltenEvaluateVisual<CR>", desc = "Evaluate visual selection" }
+
 --         opts.mappings.n["]c"] = { "<Cmd>MoltenNext<CR>", desc = "Next Molten Cel" }
 --         opts.mappings.n["[c"] = { "<Cmd>MoltenPrev<CR>", desc = "Previous Molten Cell" }
---
+
 --         opts.options.g["molten_auto_image_popup"] = false
 --         opts.options.g["molten_auto_open_html_in_browser"] = false
 --         opts.options.g["molten_auto_open_output"] = false
 --         opts.options.g["molten_cover_empty_lines"] = true
---
+
 --         opts.options.g["molten_enter_output_behavior"] = "open_and_enter"
 --         -- molten_output
---
+
 --         opts.options.g["molten_image_location"] = "both"
 --         opts.options.g["molten_image_provider"] = "image.nvim"
 --         opts.options.g["molten_output_show_more"] = true
 --         opts.options.g["molten_use_border_highlights"] = true
---
+
 --         opts.options.g["molten_output_virt_lines"] = false
 --         opts.options.g["molten_virt_lines_off_by_1"] = false
 --         opts.options.g["molten_virt_text_output"] = false
 --         opts.options.g["molten_wrap_output"] = true
---
+
 --         return opts
 --       end,
 --     },
