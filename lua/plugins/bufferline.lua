@@ -24,7 +24,7 @@ return {
               function() require("bufferline.commands").pick() end,
               desc = "Navigate to buffer tab with interactive picker",
             },
-            ["<Leader>bo"] = {
+            ["<Leader>bc"] = {
               function() require("bufferline.commands").close_others() end,
               desc = "Close all buffers except the current",
             },
