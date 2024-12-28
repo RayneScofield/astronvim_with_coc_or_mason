@@ -183,10 +183,10 @@ pip install pynvim
 
 ### Markdown Image Paste
 
-To enable image pasting in Markdown files, install the `pillow` Python package:
+To enable image pasting in Markdown files, install the `pngpaste` Python package:
 
 ```bash
-pip install pillow
+brew install pngpaste
 ```
 
 ### Show Image in Neovim
@@ -204,7 +204,7 @@ To automatically switch input methods when entering and exiting insert mode in N
 1. Install `im-select`:
 
    ```bash
-   brew tap laishulu/macism
+   brew tap laishulu/homebrew
    brew install macism
    ```
 
