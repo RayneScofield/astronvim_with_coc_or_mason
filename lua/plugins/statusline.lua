@@ -1,28 +1,4 @@
-local overseer_tasks_for_status = function(status)
-  return {
-    condition = function(self)
-      if status == "INIT" then
-        return require("utils").is_table_empty(self.tasks)
-      else
-        return self.tasks[status]
-      end
-    end,
-    provider = function(self)
-      return require("astroui.status.utils").pad_string(
-        string.format("%s%d", self.symbols[status], self.tasks[status] and #self.tasks[status] or 0),
-        { left = 1 }
-      )
-    end,
-    hl = function()
-      local get_hlgroup = require("astroui").get_hlgroup
-      local fg = get_hlgroup(string.format("Overseer%s", status)).fg
-      if status == "INIT" then fg = get_hlgroup("Normal").fg end
-      return {
-        fg = fg,
-      }
-    end,
-  }
-end
+local is_available = require("astrocore").is_available
 
 ---@type LazySpec
 return {
@@ -34,10 +10,22 @@ return {
       icons = {
         VimIcon = "",
         ScrollText = "",
-        GitBranch = "",
-        GitAdd = "",
-        GitChange = "",
-        GitDelete = "",
+        VirtualEnv = "",
+        OverseerInit = "",
+        OverseerCanceled = "",
+        OverseerFailure = "󰅚",
+        OverseerSuccess = "󰄴",
+        OverseerRunning = "󰑮",
+        SelectCount = "󰆙",
+      },
+      text_icons = {
+        VirtualEnv = "[CONDA]",
+        OverseerInit = "I",
+        OverseerCanceled = "C",
+        OverseerFailure = "F",
+        OverseerSuccess = "S",
+        OverseerRunning = "R",
+        SelectCount = "SC",
       },
       -- modify variables used by heirline but not defined in the setup call directly
       status = {
@@ -51,21 +39,22 @@ return {
         colors = function(hl)
           local get_hlgroup = require("astroui").get_hlgroup
           -- use helper function to get highlight group properties
-          local comment_fg = get_hlgroup("Comment").fg
-          hl.git_branch_fg = comment_fg
-          hl.git_added = comment_fg
-          hl.git_changed = comment_fg
-          hl.git_removed = comment_fg
           hl.blank_bg = get_hlgroup("NonText").fg
           hl.file_info_bg = get_hlgroup("Normal").bg
           hl.nav_icon_bg = get_hlgroup("String").fg
           hl.nav_fg = hl.nav_icon_bg
           hl.folder_icon_bg = get_hlgroup("Error").fg
+          hl.overseer_canceled = get_hlgroup("DiagnosticWarn").fg
+          hl.overseer_running = get_hlgroup("DiagnosticInfo").fg
+          hl.overseer_success = get_hlgroup("DiagnosticHint").fg
+          hl.overseer_failure = get_hlgroup("DiagnosticError").fg
+          hl.virtual_env_fg = get_hlgroup("String").fg
 
           return hl
         end,
         attributes = {
           mode = { bold = true },
+          overseer = { bold = true },
         },
         icon_highlights = {
           file_icon = {
@@ -125,6 +114,19 @@ return {
           -- define the section separator
           surround = {
             separator = "left",
+            color = {
+              main = "file_info_bg",
+              right = "diag_HINT",
+            },
+          },
+        },
+        require("heirline.component").ruler {
+          -- add padding
+          padding = { left = 1, right = 1 },
+          -- define the section separator
+          surround = {
+            separator = "left",
+            color = { main = "diag_HINT", right = "file_info_bg" },
           },
         },
         -- add a component for the current git branch if it exists and use no separator for the sections
@@ -162,35 +164,12 @@ return {
             icon = { padding = { right = 1 } },
           },
         },
-        {
-          -- define a simple component where the provider is just a folder icon
-          condition = function() return package.loaded.overseer end,
-          init = function(self)
-            local tasks = require("overseer.task_list").list_tasks { unique = true }
-            local tasks_by_status = require("overseer.util").tbl_group_by(tasks, "status")
-            self.tasks = tasks_by_status
-          end,
-          static = {
-            symbols = {
-              ["INIT"] = require("astroui.status.utils").pad_string("", { right = 1 }),
-              ["CANCELED"] = require("astroui.status.utils").pad_string("", { right = 1 }),
-              ["FAILURE"] = require("astroui.status.utils").pad_string("󰅚", { right = 1 }),
-              ["SUCCESS"] = require("astroui.status.utils").pad_string("󰄴", { right = 1 }),
-              ["RUNNING"] = require("astroui.status.utils").pad_string("󰑮", { right = 1 }),
-            },
-          },
-          on_click = {
-            name = "overseer_toggle",
-            callback = function() vim.schedule(vim.cmd.OverseerToggle) end,
-          },
-          overseer_tasks_for_status "INIT",
-          overseer_tasks_for_status "CANCELED",
-          overseer_tasks_for_status "RUNNING",
-          overseer_tasks_for_status "SUCCESS",
-          overseer_tasks_for_status "FAILURE",
-        },
+        require("heirline.component").overseer {},
         status.component.virtual_env {
-          padding = { right = 1 },
+          virtual_env = {
+            icon = { kind = "VirtualEnv", padding = { right = 1 } },
+            padding = { right = 1 },
+          },
         },
         -- NvChad has some nice icons to go along with information, so we can create a parent component to do this
         -- all of the children of this table will be treated together as a single component
