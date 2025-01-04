@@ -2,6 +2,7 @@ return {}
 -- return {
 --   {
 --     "3rd/image.nvim",
+--     ft = { "markdown", "norg", "vimwiki" },
 --     dependencies = {
 --       {
 --         "nvim-treesitter/nvim-treesitter",
