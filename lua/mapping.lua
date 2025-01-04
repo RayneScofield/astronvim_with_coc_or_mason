@@ -23,7 +23,7 @@ function M.core_mappings(mappings)
     maps.n["N"] = { "Nzz" }
 
     -- close search highlight
-    maps.n["<Esc>"] = { ":nohlsearch<CR>", desc = "Close search highlight", silent = true }
+    -- maps.n["<Esc>"] = { ":nohlsearch<CR>", desc = "Close search highlight", silent = true }
 
     maps.n["H"] = { "^", desc = "Go to start without blank" }
     maps.n["L"] = { "$", desc = "Go to end without blank" }
