@@ -80,6 +80,13 @@ function M.core_mappings(mappings)
         desc = "ToggleTerm btm",
       }
     end
+
+    -- window
+    local get_icon = require("astroui").get_icon
+    maps.n["<Leader>w"] = { desc = get_icon("Window", 1, true) }
+    maps.n["<Leader>wc"] = { "<C-w>c", desc = "Close current screen" }
+    maps.n["<Leader>wo"] = { "<C-w>o", desc = "Close other screen" }
+    maps.n["<Leader>we"] = { "<C-w>=", desc = "Equals All Window" }
   end
 
   return maps

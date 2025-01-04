@@ -2,7 +2,7 @@ return {}
 -- ---@type LazySpec
 -- return {
 --   "chaozwn/im-select.nvim",
---   lazy = false,
+--   event = "User AstroFile",
 --   opts = {
 --     default_command = "macism",
 --     default_main_select = "im.rime.inputmethod.Squirrel.Hans",
