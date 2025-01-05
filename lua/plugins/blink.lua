@@ -107,8 +107,6 @@ return {
         function(cmp)
           if cmp.is_visible() then
             return cmp.accept()
-          elseif has_words_before() then
-            return cmp.show()
           end
         end,
         "fallback",
