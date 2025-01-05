@@ -105,9 +105,7 @@ return {
       ["<C-E>"] = { "hide", "fallback" },
       ["<CR>"] = {
         function(cmp)
-          if cmp.is_visible() then
-            return cmp.accept()
-          end
+          if cmp.is_visible() then return cmp.accept() end
         end,
         "fallback",
       },
