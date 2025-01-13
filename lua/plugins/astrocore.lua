@@ -53,7 +53,6 @@ return {
       },
       g = {
         autoformat = false,
-
         -- @ray
         clipboard = {
           name = "WslClipboard",
@@ -67,7 +66,6 @@ return {
           },
           cache_enable = 0,
         },
-
         have_nerd_font = true,
       },
     }
@@ -159,6 +157,9 @@ return {
             callback = function()
               -- vim.opt_local.formatoptions:remove({"c", "r", "o"})
               vim.opt_local.formatoptions:remove { "c", "o" }
+            end,
+          },
+        },
         auto_close_dadbod_output = {
           {
             event = "FileType",
