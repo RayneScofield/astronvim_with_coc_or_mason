@@ -3,10 +3,10 @@ return {}
 --   local _ = require "mason-core.functional"
 --   local path = require "mason-core.path"
 --   local platform = require "mason-core.platform"
---
+
 --   local append_node_modules = _.map(function(dir) return path.concat { dir, "node_modules" } end)
 --   local install_dir = require("mason-registry").get_package("angular-language-server"):get_install_path()
---
+
 --   local cmd = {
 --     "ngserver",
 --     "--stdio",
@@ -22,10 +22,10 @@ return {}
 --     ),
 --   }
 --   if platform.is.win then cmd[1] = vim.fn.exepath(cmd[1]) end
---
+
 --   return cmd
 -- end
---
+
 -- return {
 --   {
 --     "AstroNvim/astrolsp",
@@ -99,9 +99,19 @@ return {}
 --       })
 --     end,
 --   },
---   { "chaozwn/angular-quickswitch.nvim", event = "VeryLazy", opts = {
---     use_default_keymaps = false,
---   } },
+--   {
+--     "chaozwn/angular-quickswitch.nvim",
+--     cond = require("lazy_load_util").wants {
+--       root = {
+--         "angular.json",
+--         "nx.json", --support for nx workspace
+--       },
+--     },
+--     event = "VeryLazy",
+--     opts = {
+--       use_default_keymaps = false,
+--     },
+--   },
 --   {
 --     "nvim-treesitter/nvim-treesitter",
 --     optional = true,

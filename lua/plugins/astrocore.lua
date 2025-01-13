@@ -127,13 +127,6 @@ return {
         },
       },
       autocmds = {
-        auto_turnoff_paste = {
-          {
-            event = "InsertLeave",
-            pattern = "*",
-            command = "set nopaste",
-          },
-        },
         auto_close_molten_output = {
           {
             event = "FileType",
@@ -166,6 +159,19 @@ return {
             callback = function()
               -- vim.opt_local.formatoptions:remove({"c", "r", "o"})
               vim.opt_local.formatoptions:remove { "c", "o" }
+        auto_close_dadbod_output = {
+          {
+            event = "FileType",
+            pattern = { "dbout" },
+            callback = function(event)
+              vim.bo[event.buf].buflisted = false
+              vim.schedule(function()
+                vim.keymap.set("n", "q", function() vim.cmd "q!" end, {
+                  buffer = event.buf,
+                  silent = true,
+                  desc = "Quit buffer",
+                })
+              end)
             end,
           },
         },
