@@ -19,7 +19,8 @@ end
 
 local choose_dap_element = function(callback)
   vim.ui.select({
-    "default",
+    "repl|console",
+    "console|scopes",
     "console",
     "repl",
     "stacks",
@@ -27,10 +28,10 @@ local choose_dap_element = function(callback)
     "watches",
     "scopes",
     "all elements",
-  }, { prompt = "Select Dap Layout: ", default = "default" }, function(select)
+  }, { prompt = "Select Dap Layout: ", default = "repl&console" }, function(select)
     if not select then return end
     if is_dap_window_open() then close_all_window() end
-    if select == "default" then
+    if select == "console|scopes" then
       require("dapui").open { layout = 1, reset = true }
     elseif select == "console" then
       require("dapui").open { layout = 2, reset = true }
@@ -44,6 +45,8 @@ local choose_dap_element = function(callback)
       require("dapui").open { layout = 6, reset = true }
     elseif select == "scopes" then
       require("dapui").open { layout = 7, reset = true }
+    elseif select == "repl|console" then
+      require("dapui").open { layout = 9, reset = true }
     else
       require("dapui").open { layout = 8, reset = true }
       require("dapui").open { layout = 9, reset = true }
@@ -77,6 +80,35 @@ return {
       virt_lines = true,
       show_stop_reason = true,
     },
+  },
+  {
+    "saghen/blink.cmp",
+    optional = true,
+    dependencies = {
+      --NOTE: remove when commit merge: https://github.com/rcarriga/cmp-dap/pull/13
+      {
+        "rcarriga/cmp-dap",
+        commit = "db7ad7856309138ec31627271ac17a30e9d342ed",
+      },
+    },
+    opts = function(_, opts)
+      return require("astrocore").extend_tbl(opts, {
+        enabled = function()
+          return (vim.bo.buftype ~= "prompt" or require("cmp_dap").is_dap_buffer()) and vim.b.completion ~= false
+        end,
+        sources = {
+          compat = require("astrocore").list_insert_unique(opts.sources.compat or {}, { "dap" }),
+          providers = {
+            dap = {
+              kind = "Dap",
+              score_offset = 100,
+              async = true,
+              enabled = function() return require("cmp_dap").is_dap_buffer() end,
+            },
+          },
+        },
+      })
+    end,
   },
   {
     "rcarriga/nvim-dap-ui",
@@ -302,6 +334,72 @@ return {
     },
     config = function(_, opts)
       local dapui = require "dapui"
+      local dap = require "dap"
+
+      local events = {
+        "event_breakpoint",
+        "event_capabilities",
+        "event_continued",
+        "event_exited",
+        "event_initialized",
+        "event_invalidated",
+        "event_loadedSource",
+        "event_memory",
+        "event_module",
+        "event_output",
+        "event_process",
+        "event_progressEnd",
+        "event_progressStart",
+        "event_progressUpdate",
+        "event_stopped",
+        "event_terminated",
+        "event_thread",
+        "attach",
+        "breakpointLocations",
+        "completions",
+        "configurationDone",
+        "continue",
+        "dataBreakpointInfo",
+        "disassemble",
+        "disconnect",
+        "evaluate",
+        "exceptionInfo",
+        "goto",
+        "gotoTargets",
+        "initialize",
+        "launch",
+        "loadedSources",
+        "modules",
+        "next",
+        "pause",
+        "readMemory",
+        "restart",
+        "restartFrame",
+        "reverseContinue",
+        "scopes",
+        "setBreakpoints",
+        "setDataBreakpoints",
+        "setExceptionBreakpoints",
+        "setExpression",
+        "setFunctionBreakpoints",
+        "setInstructionBreakpoints",
+        "setVariable",
+        "source",
+        "stackTrace",
+        "stepBack",
+        "stepIn",
+        "stepInTargets",
+        "stepOut",
+        "terminate",
+        "terminateThreads",
+        "threads",
+        "variables",
+        "writeMemory",
+      }
+      for _, event in ipairs(events) do
+        dap.listeners.after[event].dapui_config = function() require("dapui.controls").refresh_control_panel() end
+        dap.listeners.before[event].dapui_config = function() require("dapui.controls").refresh_control_panel() end
+      end
       dapui.setup(opts)
     end,
   },
