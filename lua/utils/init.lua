@@ -1,6 +1,23 @@
 local M = {}
 local is_win = vim.loop.os_uname().version:find "Windows"
 
+function M.starts_with(str, start) return str:sub(1, #start) == start end
+
+function M.ends_with(str, ending) return ending == "" or str:sub(-#ending) == ending end
+
+function M.realpath(path)
+  if path == "" or path == nil then return nil end
+  path = vim.uv.fs_realpath(path) or path
+  return require("astrocore.rooter").normpath(path)
+end
+
+function M.get_rooter()
+  local roots = require("astrocore.rooter").detect(0, false)
+  return roots[1] and roots[1].paths[1] or vim.uv.cwd()
+end
+
+function M.cwd() return M.realpath(vim.uv.cwd()) or "" end
+
 function M.size(max, value) return value > 1 and math.min(value, max) or math.floor(max * value) end
 
 function M.update_bacon_prefs()
@@ -469,6 +486,7 @@ function M.create_launch_json()
     "python",
     "chrome",
     "angular",
+    "nextjs",
   }, { prompt = "Select Language Debug Template: ", default = "go" }, function(select)
     if not select then return end
     if select == "go" then
@@ -493,6 +511,9 @@ function M.create_launch_json()
       M.get_launch_json_by_source_file(source_file)
       source_file = vim.fn.stdpath "config" .. "/.vscode/angular_tasks.json"
       M.get_tasks_json_by_source_file(source_file)
+    elseif select == "nextjs" then
+      local source_file = vim.fn.stdpath "config" .. "/.vscode/nextjs_launch.json"
+      M.get_launch_json_by_source_file(source_file)
     end
   end)
 end
@@ -638,13 +659,7 @@ function M.toggle_lazy_git()
         border = "none",
       },
       on_open = function() M.remove_keymap("t", "<Esc>") end,
-      on_close = function()
-        -- WARNING: remove this after https://github.com/lewis6991/gitsigns.nvim/issues/1127 closed.
-        if require("astrocore").is_available "gitsigns.nvim" then
-          vim.schedule(function() vim.cmd "Gitsign reset_base" end)
-        end
-        vim.api.nvim_set_keymap("t", "<Esc>", [[<C-\><C-n>]], { silent = true, noremap = true })
-      end,
+      on_close = function() vim.api.nvim_set_keymap("t", "<Esc>", [[<C-\><C-n>]], { silent = true, noremap = true }) end,
       on_exit = function() end,
     }
   end

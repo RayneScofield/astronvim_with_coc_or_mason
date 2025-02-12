@@ -5,6 +5,8 @@ function M.core_mappings(mappings)
   local maps = mappings
   if maps then
     maps.n["<Leader>n"] = false
+    maps.n["<Leader>s"] = { desc = require("astroui").get_icon("GrugFar", 1, true) .. "Search" }
+    maps.v["<Leader>s"] = { desc = require("astroui").get_icon("GrugFar", 1, true) .. "Search" }
 
     maps.n.n = { require("utils").better_search "n", desc = "Next search" }
     maps.n.N = { require("utils").better_search "N", desc = "Previous search" }
@@ -23,7 +25,6 @@ function M.core_mappings(mappings)
 
     maps.v["<"] = { "<gv", desc = "Unindent line" }
     maps.v[">"] = { ">gv", desc = "Indent line" }
-    maps.t["<Esc>"] = { [[<C-\><C-n>]], desc = "Exit terminal mode" }
 
     -- @ray
     maps.n["<Tab>"] = { ":bnext<cr>",silent = true, desc = "Next buffer" }
@@ -53,15 +54,8 @@ function M.core_mappings(mappings)
 
     if vim.fn.executable "lazygit" == 1 then
       maps.n["<Leader>tl"] = {
-        require("utils").toggle_lazy_git(),
+        require("snacks.lazygit").open,
         desc = "ToggleTerm lazygit",
-      }
-    end
-
-    if vim.fn.executable "lazydocker" == 1 then
-      maps.n["<Leader>td"] = {
-        require("utils").toggle_lazy_docker(),
-        desc = "ToggleTerm lazydocker",
       }
     end
 
@@ -71,6 +65,10 @@ function M.core_mappings(mappings)
         desc = "ToggleTerm btm",
       }
     end
+
+    maps.n["<Leader>th"] = { require("snacks.terminal").toggle, desc = "ToggleTerm horizontal split" }
+    maps.n["<C-'>"] = { require("snacks.terminal").toggle, desc = "Toggle terminal" } -- requires terminal that supports binding <C-'>
+    maps.t["<C-'>"] = { require("snacks.terminal").toggle, desc = "Toggle terminal" } -- requires terminal that supports binding <C-'>
 
     -- window
     local get_icon = require("astroui").get_icon
