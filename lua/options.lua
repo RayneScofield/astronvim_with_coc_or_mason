@@ -19,8 +19,45 @@ vim.opt.winminwidth = 10
 vim.opt.equalalways = false
 vim.opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 
+-- @ray
+vim.opt.relativenumber = true
+vim.opt.clipboard = "unnamedplus"
+vim.opt.jumpoptions = "stack"
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.encoding = "utf-8"
+vim.opt.fileencoding = "utf-8"
+vim.opt.title = true
+vim.opt.hlsearch = true
+vim.opt.laststatus = 3
+vim.opt.expandtab = true
+vim.opt.inccommand = "split"
+vim.opt.ignorecase = true
+vim.opt.smarttab = true
+vim.opt.breakindent = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.backspace = { "start", "eol", "indent" }
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
 vim.g.autoformat = false
 vim.g.trouble_lualine = true
+-- @ray
+vim.g.clipboard = {
+  name = "WslClipboard",
+  copy = {
+    ["+"] = "clip.exe",
+    ["*"] = "clip.exe",
+  },
+  paste = {
+    ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+  },
+  cache_enable = 0,
+}
+vim.g.have_nerd_font = true
+
 vim.o.laststatus = 3
 
 if vim.fn.has "nvim-0.10" == 1 then
